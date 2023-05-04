@@ -1,22 +1,16 @@
 import { _BaseEntity } from "src/api/_base.entity";
-import { Column, PrimaryColumn, Unique } from "typeorm";
+import { Campaign } from "src/api/campaigns/entities/campaign.entity";
+import { User } from "src/api/users/entities/user.entity";
+import { Column, Entity, OneToMany, OneToOne, PrimaryColumn, Unique } from "typeorm";
 
+@Entity()
 export class Company extends _BaseEntity {
-    @Column({unique: true, length: 100})
+    @Column({unique: true, length: 200})
     name: string
 
-    @Column({ length: 500})
-    logo: string
+    @OneToOne(() => User, user => user.id)
+    primaryUser: User
 
-    @Column({length: 100})
-    contact_name: string
-    
-    @Column({length: 200})
-    contact_email: string
-
-    @Column()
-    contact_phone: string
-
-    @PrimaryColumn()
-    user_id: number
+    @OneToMany(() => Campaign, campaign => campaign.company)
+    campaigns: Campaign[]
 }

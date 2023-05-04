@@ -7,10 +7,9 @@ import { UsersModule } from './users/users.module';
 import { UserVerifyModule } from './user_verify/user_verify.module';
 import { AuthModule } from './auth/auth.module';
 import { CompaniesModule } from './companies/companies.module';
-import { CompanyUsersModule } from './company_users/company_users.module';
-import { QuestionsModule } from './questions/questions.module';
-import { AnswersModule } from './answers/answers.module';
-import { CompanyAnswersModule } from './company_answers/company_answers.module';
+import { CampaignsModule } from './campaigns/campaigns.module';
+import { SpecificationsModule } from './specifications/specifications.module';
+import { ContentModule } from './content/content.module';
 
 @Module({
   imports: [
@@ -18,10 +17,9 @@ import { CompanyAnswersModule } from './company_answers/company_answers.module';
     UsersModule,
     UserVerifyModule,
     CompaniesModule,
-    CompanyUsersModule,
-    QuestionsModule,
-    AnswersModule,
-    CompanyAnswersModule,
+    CampaignsModule,
+    SpecificationsModule,
+    ContentModule,
   ],
   providers: [JwtStrategy],
 })
