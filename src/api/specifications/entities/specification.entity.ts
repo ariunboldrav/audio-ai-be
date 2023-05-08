@@ -8,22 +8,22 @@ export class Specification extends _BaseEntity {
   media: string;
 
   @Column({ name: 'ad_seconds', nullable: null, default: 30 })
-  ad_seconds: number;
+  seconds: number;
 
   @Column({ name: 'ad_seconds', nullable: null, default: 30 })
-  ad_seconds_count: number;
+  seconds_frq: number;
 
   @Column({ name: 'ad_banner_size', default: '640x640', nullable: true })
-  ad_banner_size: string;
+  banner_size: string;
 
   @Column({ name: 'ad_banner_size', default: '640x640', nullable: true })
-  ad_banner_count: number;
+  banner_frq: number;
 
   @Column({ name: 'logo_size', default: '112x112', nullable: true })
   logo_size: string;
 
   @Column({ name: 'logo_size', default: '112x112', nullable: true })
-  logo_count: number;
+  logo_frq: number;
 
   @ManyToOne(() => Campaign, (campaign) => campaign.specifications)
   campaign: Campaign;

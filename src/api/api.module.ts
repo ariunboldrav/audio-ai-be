@@ -10,6 +10,9 @@ import { CompaniesModule } from './companies/companies.module';
 import { CampaignsModule } from './campaigns/campaigns.module';
 import { SpecificationsModule } from './specifications/specifications.module';
 import { ContentModule } from './content/content.module';
+import { FileTypesModule } from './file_types/file_types.module';
+import { FilePathsModule } from './file_paths/file_paths.module';
+import { FileAnswersModule } from './file_answers/file_answers.module';
 
 @Module({
   imports: [
@@ -20,6 +23,9 @@ import { ContentModule } from './content/content.module';
     CampaignsModule,
     SpecificationsModule,
     ContentModule,
+    FileTypesModule,
+    FilePathsModule,
+    FileAnswersModule,
   ],
   providers: [JwtStrategy],
 })
