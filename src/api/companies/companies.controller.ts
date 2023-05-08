@@ -1,20 +1,45 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Request,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
 import { CompaniesService } from './companies.service';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { UsersService } from '../users/users.service';
 
 @Controller('companies')
 export class CompaniesController {
-  constructor(private readonly companiesService: CompaniesService) {}
+  constructor(
+    private readonly companiesService: CompaniesService,
+    private readonly userService: UsersService,
+  ) {}
 
-  @Post()
-  create(@Body() createCompanyDto: CreateCompanyDto) {
-    return this.companiesService.create(createCompanyDto);
+  @UseGuards(JwtAuthGuard)
+  async create(@Body() createCompanyDto: CreateCompanyDto, @Request() req) {
+    const { ...userResponse } = await this.userService.findOne(req.user.id);
+    if (userResponse.id) {
+      throw new HttpException('No Access', HttpStatus.NOT_FOUND);
+    }
+    return this.companiesService.create(createCompanyDto, req.user.id);
   }
 
   @Get()
-  findAll() {
-    return this.companiesService.findAll();
+  async findAll(@Request() req) {
+    const { ...userResponse } = await this.userService.findOne(req.user.id);
+    if (userResponse.id) {
+      throw new HttpException('No Access', HttpStatus.NOT_FOUND);
+    }
+    return this.companiesService.findAll(req.user.id);
   }
 
   @Get(':id')

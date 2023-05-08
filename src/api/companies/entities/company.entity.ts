@@ -8,8 +8,8 @@ export class Company extends _BaseEntity {
     @Column({unique: true, length: 200})
     name: string
 
-    @OneToOne(() => User, user => user.id)
-    primaryUser: User
+    @PrimaryColumn()
+    user_id: number
 
     @OneToMany(() => Campaign, campaign => campaign.company)
     campaigns: Campaign[]

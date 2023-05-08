@@ -16,7 +16,6 @@ export class UsersService {
   async create(createUserDto: CreateUserDto) {
     const user = this._userRepository.create();
 
-    user.username = createUserDto.userName
     user.email = createUserDto.email
     user.password = createUserDto.password
     user.phone_no = createUserDto.phoneNo
@@ -46,9 +45,7 @@ export class UsersService {
 
   async findAuthUser(dto: CreateUserDto) {
     const datas = await this._userRepository
-    .findAndCount({where: [{
-          username: dto.userName,
-        },
+    .findAndCount({where: [
         {
           phone_no: dto.phoneNo,
         },
@@ -59,8 +56,8 @@ export class UsersService {
     return datas;
   }
 
-  findUsername(username: string): Promise<User> {
-    return this._userRepository.findOneBy({ username });
+  findEmail(email: string): Promise<User> {
+    return this._userRepository.findOneBy({ email });
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {

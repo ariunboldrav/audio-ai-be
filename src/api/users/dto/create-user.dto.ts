@@ -2,9 +2,6 @@ import { IsNotEmpty, IsPhoneNumber, IsString, Length, MinLength } from "class-va
 import { DeviceTypeEnum } from "src/common/enum/device.type.enum";
 
 export class CreateUserDto {
-    @IsNotEmpty({message: 'Та овогоо оруулана уу!'})
-    userName: string
-
     @IsNotEmpty({message: 'Та гар утасны дугаараа зөв оруулана уу!'})
     @IsPhoneNumber("US")
     phoneNo: string
