@@ -55,9 +55,13 @@ export class AuthController {
       var newUser = await this.userService.create(dto);
       const compDto = new CreateCompanyDto();
       compDto.name = dto.compName;
-      const { user, ...newComp } = await this.companyService.create(compDto, newUser);
+      const { user, ...newComp } = await this.companyService.create(
+        compDto,
+        newUser,
+      );
+      const {password,...theUser} = newUser
       throw new HttpException(
-        { user: newUser, company: newComp },
+        { user: theUser, company: newComp },
         HttpStatus.OK,
       );
     }

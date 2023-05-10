@@ -24,8 +24,7 @@ export class User extends _BaseEntity {
 
     @Column({nullable:false, type: 'varchar'})
     @Min(6)
-    @Exclude()
-    public password: string;
+    password: string;
 
     @Column({nullable:true, type: 'varchar'})
     public avatar: string;
