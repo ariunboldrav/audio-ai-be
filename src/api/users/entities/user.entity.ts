@@ -43,7 +43,7 @@ export class User extends _BaseEntity {
     @BeforeInsert()
     @BeforeUpdate()
     async hashPassword() {
-        const saltRounds = parseInt(process.env.HASH_SALT);
+        const saltRounds = 10
         this.password = await bcrypt.hash(this.password, saltRounds);
     }
 }

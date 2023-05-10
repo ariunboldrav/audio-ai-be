@@ -19,12 +19,19 @@ export class AuthService {
         token: null,
         message: 'Таны нууц үг эсвэл хэрэглэгчийн нэр буруу байна.',
       };
-    } else {
-      console.log(user);
+    }
+    var userPassword = user.password;
+    var userId = user.id;
+    const isMatch = await bcrypt.compare(password, userPassword);
+    if (user && isMatch) {
       return {
-        token: this.loginWithCredentials(user.id),
+        token: this.loginWithCredentials(userId),
       };
     }
+    return {
+      token: null,
+      message: 'Таны нууц үг эсвэл хэрэглэгчийн нэр буруу байна.',
+    };
   }
 
   loginWithCredentials(userId: number) {
