@@ -3,7 +3,7 @@ import { Company } from 'src/api/company/entities/company.entity';
 import { Content } from 'src/api/content/entities/content.entity';
 import { FileAnswer } from 'src/api/file_answers/entities/file_answer.entity';
 import { Specification } from 'src/api/specifications/entities/specification.entity';
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
 
 @Entity()
 export class Campaign extends _BaseEntity {
@@ -29,22 +29,22 @@ export class Campaign extends _BaseEntity {
   @JoinColumn({name: 'company_id'})
   company: Company;
 
-  @OneToMany(() => Content, c => c.campaign)
-  contents: Content[]
+  @OneToOne(() => Content, c => c.campaign)
+  contents: Content
 
-  @OneToMany(() => Specification, s => s.campaign)
-  specs: Specification[]
+  @OneToOne(() => Specification, s => s.campaign)
+  specs: Specification
 
   @OneToMany(() => FileAnswer, f => f.campaign)
   fileAnswers: FileAnswer[]
 
-  //   Maybe clients reuse that ad's dates will be abstract
-//   @Column({ name: 'when_start', default: () => 'CURRENT_TIMESTAMP(6)'})
-//   when_start: Date;
+  // Maybe clients reuse that ad's dates will be abstract
+  @Column({ name: 'when_start', default: () => 'CURRENT_TIMESTAMP(6)'})
+  when_start: Date;
 
-//   @Column({ name: 'when_end', default: () => 'CURRENT_TIMESTAMP(6)'})
-//   when_end: Date;
+  @Column({ name: 'when_end', nullable: false})
+  when_end: Date;
 
-    @OneToMany(() => Specification, spec=> spec.campaign)
-    specifications: Specification[]
+  @OneToMany(() => Specification, spec=> spec.campaign)
+  specifications: Specification[]
 }

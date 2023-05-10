@@ -1,6 +1,6 @@
 import { _BaseEntity } from 'src/api/_base.entity';
 import { Campaign } from 'src/api/campaign/entities/campaign.entity';
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
 
 @Entity()
 export class Specification extends _BaseEntity {
@@ -25,7 +25,7 @@ export class Specification extends _BaseEntity {
   @Column({ name: 'logo_freq', default: '1', nullable: true })
   logo_freq: number;
 
-  @ManyToOne(() => Campaign, (campaign) => campaign.specifications)
+  @OneToOne(() => Campaign, (campaign) => campaign.specifications)
   @JoinColumn({name: 'campaign_id'})
   campaign: Campaign;
 }
