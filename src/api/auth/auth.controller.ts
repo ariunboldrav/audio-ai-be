@@ -32,43 +32,21 @@ export class AuthController {
   ) {}
 
   @Post('login')
-  async login(@Body() dto: LoginUserDto, @Request() req) {
-    const data = await this.authService.validateUserCredentials(
-      dto.email,
-      dto.password,
-    );
-
-    if (data == null) {
-      throw new HttpException(
-        'Таны нууц үг эсвэл хэрэглэгчийн нэр буруу байна.',
-        HttpStatus.BAD_REQUEST,
-      );
-    } else {
-      // Device Log & Token
-      // const user = await this.userService.findOne(data.id);
-      throw new HttpException(
-        {
-          result: {
-            token: await this.authService.loginWithCredentials(data),
-          },
-          message: 'Амжилттай нэвтэрлээ та түр хүлээнэ үү',
-        },
-        HttpStatus.OK,
-      );
-    }
+  login(@Body() dto: LoginUserDto, @Request() req) {
+    return this.authService.validateUserCredentials(dto.email, dto.password);
   }
 
   @Post('register')
   @HttpCode(200)
   async register(@Body() dto: CreateUserDto) {
     const userResponse = await this.userService.findAuthUser(dto);
-    const compResp = await this.companyService.findName(dto.compName)
+    const compResp = await this.companyService.findName(dto.compName);
     if (userResponse) {
       throw new HttpException(
         'Энэ цахим шууданг ашиглах боломжгүй байна.',
         HttpStatus.BAD_REQUEST,
       );
-    } else if(compResp) {
+    } else if (compResp) {
       throw new HttpException(
         'Энэ компаний нэрийг ашиглах боломжгүй байна.',
         HttpStatus.BAD_REQUEST,
@@ -78,8 +56,11 @@ export class AuthController {
       const compDto = new CreateCompanyDto();
       compDto.name = dto.compName;
       compDto.user = newUser;
-      const {user, ...newComp} = await this.companyService.create(compDto);
-      throw new HttpException({user: newUser, company: newComp}, HttpStatus.OK);
+      const { user, ...newComp } = await this.companyService.create(compDto);
+      throw new HttpException(
+        { user: newUser, company: newComp },
+        HttpStatus.OK,
+      );
     }
   }
 

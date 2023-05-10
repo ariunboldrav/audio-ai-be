@@ -4,6 +4,7 @@ import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, ManyToOne
 import * as bcrypt from 'bcrypt';
 import { Company } from "src/api/company/entities/company.entity";
 import { Logger } from "@nestjs/common";
+import { Exclude } from "class-transformer";
 
 @Entity()
 export class User extends _BaseEntity {
@@ -23,6 +24,7 @@ export class User extends _BaseEntity {
 
     @Column({nullable:false, type: 'varchar'})
     @Min(6)
+    @Exclude()
     public password: string;
 
     @Column({nullable:true, type: 'varchar'})

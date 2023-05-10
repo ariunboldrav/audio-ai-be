@@ -17,7 +17,7 @@ export class Campaign extends _BaseEntity {
   brand_name: string;
   
   // Ads total price
-  @Column({ name: 'serving_budget', type: 'decimal' })
+  @Column({ name: 'total_budget', type: 'decimal' })
   total_budget: number;
 
   // Ad's unit/day price 

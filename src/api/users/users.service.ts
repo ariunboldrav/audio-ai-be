@@ -28,7 +28,8 @@ export class UsersService {
   }
 
   findOne(id: number): Promise<User> {
-    return this._userRepository.findOneBy({ id });
+    const user = this._userRepository.findOneBy({ id });
+    return user;
   }
 
   findPhone(phone: string): Promise<User> {
@@ -43,14 +44,17 @@ export class UsersService {
   }
 
   findAuthUser(dto: CreateUserDto): Promise<User> {
-    const user = this._userRepository.findOne({
+    return this._userRepository.findOne({
       where: { email: dto.email },
     });
-    return user;
   }
 
   findEmail(email: string): Promise<User> {
-    return this._userRepository.findOneBy({ email });
+    return this._userRepository.findOne({
+      where: {
+        email,
+      },
+    });
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {

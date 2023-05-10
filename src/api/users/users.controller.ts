@@ -21,19 +21,18 @@ import { CreateCompanyDto } from '../company/dto/create-company.dto';
 export class UsersController {
   constructor(
     private readonly usersService: UsersService,
-    private readonly companyService: CompanyService
+    private readonly companyService: CompanyService,
   ) {}
 
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
-
     const user = this.usersService.create(createUserDto);
-    const compDto = new CreateCompanyDto;
-    compDto.name = createUserDto.compName
-    compDto.user = user
+    const compDto = new CreateCompanyDto();
+    compDto.name = createUserDto.compName;
+    compDto.user = user;
 
-    const company = this.companyService.create(compDto)
-    return user
+    const company = this.companyService.create(compDto);
+    return user;
   }
 
   @Get()
