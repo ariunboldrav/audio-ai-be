@@ -1,7 +1,9 @@
 import { _BaseEntity } from 'src/api/_base.entity';
-import { Company } from 'src/api/companies/entities/company.entity';
+import { Company } from 'src/api/company/entities/company.entity';
+import { Content } from 'src/api/content/entities/content.entity';
+import { FileAnswer } from 'src/api/file_answers/entities/file_answer.entity';
 import { Specification } from 'src/api/specifications/entities/specification.entity';
-import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany } from 'typeorm';
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 
 @Entity()
 export class Campaign extends _BaseEntity {
@@ -24,7 +26,17 @@ export class Campaign extends _BaseEntity {
   
   // This field must be relations
   @ManyToOne(() => Company, (company) => company.campaigns)
+  @JoinColumn({name: 'company_id'})
   company: Company;
+
+  @OneToMany(() => Content, c => c.campaign)
+  contents: Content[]
+
+  @OneToMany(() => Specification, s => s.campaign)
+  specs: Specification[]
+
+  @OneToMany(() => FileAnswer, f => f.campaign)
+  fileAnswers: FileAnswer[]
 
   //   Maybe clients reuse that ad's dates will be abstract
 //   @Column({ name: 'when_start', default: () => 'CURRENT_TIMESTAMP(6)'})

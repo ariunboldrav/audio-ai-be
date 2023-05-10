@@ -6,8 +6,8 @@ import { JwtStrategy } from './auth/jwt.strategy';
 import { UsersModule } from './users/users.module';
 import { UserVerifyModule } from './user_verify/user_verify.module';
 import { AuthModule } from './auth/auth.module';
-import { CompaniesModule } from './companies/companies.module';
-import { CampaignsModule } from './campaigns/campaigns.module';
+import { CompanyModule } from './company/company.module';
+import { CampaignModule } from './campaign/campaign.module';
 import { SpecificationsModule } from './specifications/specifications.module';
 import { ContentModule } from './content/content.module';
 import { FileTypesModule } from './file_types/file_types.module';
@@ -19,8 +19,8 @@ import { FileAnswersModule } from './file_answers/file_answers.module';
     AuthModule,
     UsersModule,
     UserVerifyModule,
-    CompaniesModule,
-    CampaignsModule,
+    CompanyModule,
+    CampaignModule,
     SpecificationsModule,
     ContentModule,
     FileTypesModule,

@@ -1,14 +1,23 @@
 import { _BaseEntity } from "src/api/_base.entity";
-import { Column, Entity, PrimaryColumn } from "typeorm";
+import { Campaign } from "src/api/campaign/entities/campaign.entity";
+import { FilePath } from "src/api/file_paths/entities/file_path.entity";
+import { FileType } from "src/api/file_types/entities/file_type.entity";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn } from "typeorm";
 
 @Entity()
 export class FileAnswer extends _BaseEntity {
-    @PrimaryColumn()
-    campaign_id: number
+    @ManyToOne(() => Campaign, c => c.fileAnswers)
+    @JoinColumn({name: 'campaign_id'})
+    campaign: Campaign
 
-    @PrimaryColumn()
-    type_id: number
+    @ManyToOne(() => FileType, ft => ft.fileAnswers)
+    @JoinColumn({name: 'file_type_id'})
+    fType: FileType
 
     @Column({})
     answer: string
+
+    @OneToMany(() => FilePath, fp => fp.fileAnswers)
+    paths: FilePath[]
+
 }

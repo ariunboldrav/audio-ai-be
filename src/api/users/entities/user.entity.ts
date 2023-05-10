@@ -1,10 +1,14 @@
 import { IsEmail, IsPhoneNumber, Length, Min } from "class-validator";
 import { _BaseEntity } from "src/api/_base.entity";
-import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, ManyToOne, OneToMany, OneToOne, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import * as bcrypt from 'bcrypt';
+import { Company } from "src/api/company/entities/company.entity";
+import { Logger } from "@nestjs/common";
 
 @Entity()
 export class User extends _BaseEntity {
+    @Column({nullable: false, type:'varchar'})
+    public full_name: string;
 
     @Column({unique: true, nullable: false, type:'varchar'})
     @IsEmail()
@@ -12,7 +16,7 @@ export class User extends _BaseEntity {
 
     @Column({unique: true, nullable:false, type: 'varchar', length: 15})
     @IsPhoneNumber()
-    public phone_no: string;
+    public phone: string;
 
     @Column({default: true})
     public is_active: boolean;
@@ -27,6 +31,9 @@ export class User extends _BaseEntity {
     @Column({type: 'boolean', default: false})
     public is_deleted: false
 
+    @OneToMany(() => Company, (c) => c.user)
+    companies: Company[]
+
     // @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" })
     @CreateDateColumn({ type: "timestamp", default: null, nullable: true })
     public deleted_at: Date;
@@ -36,6 +43,5 @@ export class User extends _BaseEntity {
     async hashPassword() {
         const saltRounds = parseInt(process.env.HASH_SALT);
         this.password = await bcrypt.hash(this.password, saltRounds);
-        console.log('Password: '+this.password)
     }
 }

@@ -1,5 +1,6 @@
 import { _BaseEntity } from "src/api/_base.entity";
-import { Column, Entity } from "typeorm";
+import { FileAnswer } from "src/api/file_answers/entities/file_answer.entity";
+import { Column, Entity, OneToMany } from "typeorm";
 
 @Entity()
 export class FileType extends _BaseEntity {
@@ -8,4 +9,7 @@ export class FileType extends _BaseEntity {
 
     @Column()
     info: string
+
+    @OneToMany(()=> FileAnswer, fa => fa.fType)
+    fileAnswers: FileAnswer[]
 }

@@ -1,10 +1,12 @@
 import { _BaseEntity } from "src/api/_base.entity";
-import { Column, Entity, PrimaryColumn } from "typeorm";
+import { FileAnswer } from "src/api/file_answers/entities/file_answer.entity";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
 
 @Entity()
 export class FilePath extends _BaseEntity {
-    @PrimaryColumn()
-    answer_id: number
+    @ManyToOne(() => FileAnswer, fa => fa.answer)
+    @JoinColumn({name: 'file_answer_id'})
+    fileAnswers: FileAnswer
 
     @Column({nullable: false})
     path: string

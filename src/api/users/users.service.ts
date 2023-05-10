@@ -13,15 +13,14 @@ export class UsersService {
     private _userRepository: Repository<User>,
   ) {}
 
-  async create(createUserDto: CreateUserDto) {
-    const user = this._userRepository.create();
-
-    user.email = createUserDto.email
-    user.password = createUserDto.password
-    user.phone_no = createUserDto.phoneNo
-
-    const save = await this._userRepository.save(user);
-    return { ...save };
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    const user = await this._userRepository.create();
+    user.full_name = createUserDto.fullName;
+    user.email = createUserDto.email;
+    user.password = createUserDto.password;
+    user.phone = createUserDto.phone;
+    this._userRepository.save(user);
+    return user;
   }
 
   findAll() {
@@ -32,10 +31,10 @@ export class UsersService {
     return this._userRepository.findOneBy({ id });
   }
 
-  async findPhone(phone_no: string): Promise<User> {
-    const data = await this._userRepository.findOne({
+  findPhone(phone: string): Promise<User> {
+    const data = this._userRepository.findOne({
       where: {
-        phone_no: phone_no,
+        phone: phone,
         is_deleted: false,
         is_verified: true,
       },
@@ -43,17 +42,11 @@ export class UsersService {
     return data;
   }
 
-  async findAuthUser(dto: CreateUserDto) {
-    const datas = await this._userRepository
-    .findAndCount({where: [
-        {
-          phone_no: dto.phoneNo,
-        },
-        {
-          email: dto.email,
-        }
-      ]});
-    return datas;
+  findAuthUser(dto: CreateUserDto): Promise<User> {
+    const user = this._userRepository.findOne({
+      where: { email: dto.email },
+    });
+    return user;
   }
 
   findEmail(email: string): Promise<User> {
@@ -61,21 +54,24 @@ export class UsersService {
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
-    const user = await this._userRepository.findOneBy({id, is_active: true});
-    if(updateUserDto.newPass != null && updateUserDto.newPass === updateUserDto.confirmPass) {
-      user.password = updateUserDto.newPass
+    const user = await this._userRepository.findOneBy({ id, is_active: true });
+    if (
+      updateUserDto.newPass != null &&
+      updateUserDto.newPass === updateUserDto.confirmPass
+    ) {
+      user.password = updateUserDto.newPass;
     }
-    const save = this._userRepository.save(user)
-    return {...save};
+    const save = this._userRepository.save(user);
+    return { ...save };
   }
 
   async resetPassword(id: number, dto: VerifyTokenDto) {
-    const user = await this._userRepository.findOneBy({id, is_active: true});
-    if(dto.newPassword != null && dto.newPassword === dto.confirmPass) {
-      user.password = dto.newPassword
+    const user = await this._userRepository.findOneBy({ id, is_active: true });
+    if (dto.newPassword != null && dto.newPassword === dto.confirmPass) {
+      user.password = dto.newPassword;
     }
-    const save = this._userRepository.save(user)
-    return {...save};
+    const save = this._userRepository.save(user);
+    return { ...save };
   }
 
   async remove(id: number): Promise<void> {

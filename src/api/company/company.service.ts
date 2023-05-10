@@ -7,34 +7,38 @@ import { Repository } from 'typeorm';
 import { User } from '../users/entities/user.entity';
 
 @Injectable()
-export class CompaniesService {
-  
+export class CompanyService {
   constructor(
     @InjectRepository(Company)
     private _companyResp: Repository<Company>,
   ) {}
-  
-  async create(createCompanyDto: CreateCompanyDto, userId: number) {
-    const company = this._companyResp.create();
-    company.name = createCompanyDto.name;
-    company.user_id = userId
-    company.is_verified = true
 
-    const save = await this._companyResp.save(company)
-    return {...save};
+  async create(createCompanyDto: CreateCompanyDto): Promise<Company> {
+    const company = await this._companyResp.create();
+    company.name = createCompanyDto.name;
+    company.user = createCompanyDto.user;
+    company.is_verified = true;
+    const save = this._companyResp.save(company);
+    return save;
   }
-  
-  async findAll(userId: number) {
-    const companies = await this._companyResp.find({
-      where: {
-        user_id: userId
-      }
-    })
+
+  async findAll(user: User) {
+    const companies = await this._companyResp.find();
     return companies;
   }
 
   findOne(id: number) {
     return this._companyResp.findOneBy({ id });
+  }
+
+  findName(name: string): Promise<Company> {
+    const comp = this._companyResp.findOne({
+      where: {
+        name,
+      },
+    });
+
+    return comp;
   }
 
   update(id: number, updateCompanyDto: UpdateCompanyDto) {

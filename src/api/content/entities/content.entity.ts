@@ -1,8 +1,12 @@
 import { _BaseEntity } from "src/api/_base.entity";
-import { Column, Entity } from "typeorm";
+import { Campaign } from "src/api/campaign/entities/campaign.entity";
+import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 
 @Entity()
 export class Content extends _BaseEntity {
+    @ManyToOne(() => Campaign, (c) => c.contents)
+    @JoinColumn({name: 'campaign_id'})
+    campaign: Campaign
 
     @Column({type: 'text'})
     goal: string

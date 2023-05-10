@@ -3,7 +3,7 @@ import { CreateCampaignDto } from './dto/create-campaign.dto';
 import { UpdateCampaignDto } from './dto/update-campaign.dto';
 
 @Injectable()
-export class CampaignsService {
+export class CampaignService {
   create(createCampaignDto: CreateCampaignDto) {
     return 'This action adds a new campaign';
   }

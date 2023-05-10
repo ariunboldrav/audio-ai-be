@@ -8,10 +8,12 @@ import { jwtConstants } from './constants';
 import { LocalStrategy } from './local.strategy';
 import { JwtStrategy } from './jwt.strategy';
 import { TokenModule } from '../token/token.module';
+import { CompanyModule } from '../company/company.module';
 
 @Module({
   imports: [
     UsersModule,
+    CompanyModule,
     PassportModule,
     TokenModule,
     JwtModule.register({
