@@ -22,7 +22,7 @@ export class AuthService {
     } else {
       console.log(user);
       return {
-        token: await this.loginWithCredentials(user.id),
+        token: this.loginWithCredentials(user.id),
       };
     }
   }

@@ -9,6 +9,8 @@ import {
   HttpException,
   HttpStatus,
   UseGuards,
+  HttpCode,
+  Request,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -30,7 +32,6 @@ export class UsersController {
     const compDto = new CreateCompanyDto();
     compDto.name = createUserDto.compName;
     compDto.user = user;
-
     const company = this.companyService.create(compDto);
     return user;
   }
@@ -40,9 +41,10 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    const user = this.usersService.findOne(+id);
+  @UseGuards(JwtAuthGuard)
+  @Get('profile')
+  profile(@Request() req) {
+    const user = this.usersService.findOne(req.user.id);
     // console.log(user)
     return user;
     // throw new HttpException({ result: user, message: null }, HttpStatus.OK)
