@@ -40,10 +40,10 @@ export class User extends _BaseEntity {
     @CreateDateColumn({ type: "timestamp", default: null, nullable: true })
     public deleted_at: Date;
 
-    @BeforeInsert()
-    @BeforeUpdate()
-    async hashPassword() {
-        const saltRounds = 10
-        this.password = await bcrypt.hash(this.password, saltRounds);
-    }
+    // @BeforeInsert()
+    // @BeforeUpdate()
+    // async hashPassword() {
+    //     const saltRounds = 10
+    //     this.password = await bcrypt.hash(this.password, saltRounds);
+    // }
 }

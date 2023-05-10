@@ -5,6 +5,7 @@ import { VerifyTokenDto } from '../token/dto/verify-token.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -17,7 +18,9 @@ export class UsersService {
     const user = await this._userRepository.create();
     user.full_name = createUserDto.fullName;
     user.email = createUserDto.email;
-    user.password = createUserDto.password;
+    // user.password = createUserDto.password;
+    const saltRounds = 10;
+    user.password = await bcrypt.hash(createUserDto.password, saltRounds);
     user.phone = createUserDto.phone;
     this._userRepository.save(user);
     return user;

@@ -25,7 +25,7 @@ export class CompanyController {
 
   @UseGuards(JwtAuthGuard)
   async create(@Body() createCompanyDto: CreateCompanyDto, @Request() req) {
-    return this.companyService.create(createCompanyDto);
+    // return this.companyService.create(createCompanyDto);
   }
 
   @Get()

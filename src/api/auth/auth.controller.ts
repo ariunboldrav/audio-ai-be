@@ -52,11 +52,10 @@ export class AuthController {
         HttpStatus.BAD_REQUEST,
       );
     } else {
-      const { password, ...newUser } = await this.userService.create(dto);
+      var newUser = await this.userService.create(dto);
       const compDto = new CreateCompanyDto();
       compDto.name = dto.compName;
-      compDto.user = newUser;
-      const { user, ...newComp } = await this.companyService.create(compDto);
+      const { user, ...newComp } = await this.companyService.create(compDto, newUser);
       throw new HttpException(
         { user: newUser, company: newComp },
         HttpStatus.OK,

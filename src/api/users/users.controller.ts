@@ -29,10 +29,6 @@ export class UsersController {
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
     const user = this.usersService.create(createUserDto);
-    const compDto = new CreateCompanyDto();
-    compDto.name = createUserDto.compName;
-    compDto.user = user;
-    const company = this.companyService.create(compDto);
     return user;
   }
 

@@ -13,10 +13,10 @@ export class CompanyService {
     private _companyResp: Repository<Company>,
   ) {}
 
-  async create(createCompanyDto: CreateCompanyDto): Promise<Company> {
+  async create(createCompanyDto: CreateCompanyDto, user: User): Promise<Company> {
     const company = await this._companyResp.create();
     company.name = createCompanyDto.name;
-    company.user = createCompanyDto.user;
+    company.user = user;
     company.is_verified = true;
     const save = this._companyResp.save(company);
     return save;
