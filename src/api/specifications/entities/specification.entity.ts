@@ -35,7 +35,7 @@ export class Specification extends _BaseEntity {
   @OneToOne(() => Campaign, (campaign) => campaign.spec, {
     onDelete: 'CASCADE',
   })
-
   @JoinColumn({ name: 'campaign_id' })
   campaign: Campaign;
+  
 }

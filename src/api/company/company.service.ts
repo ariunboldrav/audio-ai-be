@@ -27,14 +27,14 @@ export class CompanyService {
     return save;
   }
 
-  async findByUser(userId: number, compId: number): Promise<Company> {
+  async findByUser(userId: number): Promise<Company> {
     const company = await this._query.getRepository(Company).findOne({
       where: {
-        id: compId,
+        user: {
+          id: userId,
+        },
       },
-      relations: {
-        campaigns: true,
-      },
+      relations: ['campaigns', 'campaigns.spec'],
     });
     return company;
   }

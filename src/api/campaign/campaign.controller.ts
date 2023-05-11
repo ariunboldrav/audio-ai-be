@@ -27,8 +27,7 @@ export class CampaignController {
   @UseGuards(JwtAuthGuard)
   @Post()
   async create(@Request() req, @Body() createCampaignDto: CreateCampaignDto) {
-    const compId = createCampaignDto.compId;
-    const company = await this.companyService.findByUser(req.user.id, compId);
+    const company = await this.companyService.findByUser(req.user.id);
     if (company && company.campaigns.length > 0) {
       const campaign = await this.campaignService.update(
         company.campaigns[0].id,
