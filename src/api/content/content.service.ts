@@ -24,20 +24,13 @@ export class ContentService {
     content.features = createContentDto.features;
     content.goal = createContentDto.goal;
     content.key_messages = createContentDto.keyMessages;
+    content.hope = createContentDto.hope;
+    content.style_adv = createContentDto.styleAdv;
+    content.guideline_tone = createContentDto.guidelineTone;
+    content.target_audience = createContentDto.targetAudience;
     const save = this._contentRepository.save(content);
 
     return save;
-  }
-
-  findByCampaign(campId: number) {
-    const data = this._query
-      .createQueryBuilder()
-      .select('*')
-      .from(Content, 'content')
-      .where('content.campaign_id = :campId', { campId })
-      .getRawOne();
-
-    return data;
   }
 
   findAll() {
@@ -45,10 +38,33 @@ export class ContentService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} content`;
+    const data = this._contentRepository.findOne({
+      where: {
+        id,
+      },
+      relations: ['campaign']
+    });
+    return data;
   }
 
-  update(id: number, updateContentDto: UpdateContentDto) {
+  async update(id: number, updateContentDto: UpdateContentDto) {
+    const content = await this.findOne(id);
+
+    content.campaign = updateContentDto.campaign;
+    content.audience_feel = updateContentDto.audienceFeel;
+    content.character_or_tone = updateContentDto.characterOrTone;
+    content.comments = updateContentDto.comments;
+    content.features = updateContentDto.features;
+    content.goal = updateContentDto.goal;
+    content.key_messages = updateContentDto.keyMessages;
+    content.hope = updateContentDto.hope;
+    content.style_adv = updateContentDto.styleAdv;
+    content.guideline_tone = updateContentDto.guidelineTone;
+    content.target_audience = updateContentDto.targetAudience;
+    const save = this._contentRepository.save(content);
+
+    return save;
+
     return `This action updates a #${id} content`;
   }
 

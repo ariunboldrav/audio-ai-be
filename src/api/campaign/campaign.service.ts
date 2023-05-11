@@ -37,25 +37,6 @@ export class CampaignService {
   }
 
   async findByCompany(userId: number): Promise<any> {
-    // const campaign = await this._query
-    //   .createQueryBuilder()
-    //   .select('campaign.id')
-    //   .from(User, 'user')
-    //   .leftJoinAndMapOne(
-    //     'user.id',
-    //     Company,
-    //     'company',
-    //     'company.user_id = user.id',
-    //   )
-    //   .leftJoinAndMapOne(
-    //     'company.id',
-    //     Campaign,
-    //     'campaign',
-    //     'campaign.company_id = company.id',
-    //   )
-    //   .where('user.id = :userId', { userId })
-    //   .getRawOne();
-
     const campaign = await this._query.getRepository(User).findOne({
       where: {
         id: userId,

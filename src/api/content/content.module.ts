@@ -4,11 +4,14 @@ import { ContentController } from './content.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Content } from './entities/content.entity';
 import { CampaignModule } from '../campaign/campaign.module';
+import { CompanyModule } from '../company/company.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Content]), 
-    CampaignModule
+    CompanyModule,
+    CampaignModule,
+
   ],
   controllers: [ContentController],
   providers: [ContentService],

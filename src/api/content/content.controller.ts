@@ -8,30 +8,49 @@ import {
   Delete,
   Request,
   UseGuards,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { ContentService } from './content.service';
 import { CreateContentDto } from './dto/create-content.dto';
 import { UpdateContentDto } from './dto/update-content.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CampaignService } from '../campaign/campaign.service';
+import { CompanyService } from '../company/company.service';
 
 @Controller('content')
 export class ContentController {
   constructor(
     private readonly contentService: ContentService,
-    private readonly campaignService: CampaignService,
+    private readonly companyService: CompanyService,
   ) {}
 
   @UseGuards(JwtAuthGuard)
   @Post()
   async create(@Body() createContentDto: CreateContentDto, @Request() req) {
-    const campaign = await this.campaignService.findByCompany(req.user.id);
-    const data = await this.contentService.findByCampaign(campaign.id);
-    if (!data.content_id) {
-      const content = await this.contentService.create(createContentDto);
-      return content;
+    const company = await this.companyService.findByUser(req.user.id);
+    if (!company || company.campaigns.length == 0) {
+      // console.log('Error');
+      throw new HttpException(
+        { message: 'Not Found Company - Forbidden' },
+        HttpStatus.FORBIDDEN,
+      );
+    } else if (company.campaigns[0].content == null) {
+      // console.log('Insert');
+      createContentDto.campaign = company.campaigns[0];
+      const content = await this.contentService.create(
+        createContentDto,
+      );
+      throw new HttpException(content, HttpStatus.OK);
+    } else {
+      // console.log('Update');
+      const conntetId = company.campaigns[0].content.id;
+      const content = await this.contentService.update(
+        conntetId,
+        createContentDto,
+      );
+      throw new HttpException(content, HttpStatus.OK);
     }
-    return data;
   }
 
   @Get()
