@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Company } from './entities/company.entity';
 import { DataSource, Repository } from 'typeorm';
 import { User } from '../users/entities/user.entity';
+import { Campaign } from '../campaign/entities/campaign.entity';
 
 @Injectable()
 export class CompanyService {
@@ -26,14 +27,15 @@ export class CompanyService {
     return save;
   }
 
-  async findByUser(userId: number): Promise<Company> {
-    const company = await this._query
-      .createQueryBuilder()
-      .select('*')
-      .from(Company, 'company')
-      .where('company.user_id = :userId', { userId })
-      .getRawOne();
-
+  async findByUser(userId: number, compId: number): Promise<Company> {
+    const company = await this._query.getRepository(Company).findOne({
+      where: {
+        id: compId,
+      },
+      relations: {
+        campaigns: true,
+      },
+    });
     return company;
   }
 

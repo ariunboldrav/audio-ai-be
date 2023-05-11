@@ -37,34 +37,53 @@ export class CampaignService {
   }
 
   async findByCompany(userId: number): Promise<any> {
-    const campaign = await this._query
-      .createQueryBuilder()
-      .select('campaign.*')
-      .from(User, 'user')
-      .leftJoinAndMapOne(
-        'user.id',
-        Company,
-        'company',
-        'company.user_id = user.id',
-      )
-      .leftJoinAndMapOne(
-        'company.id',
-        Campaign,
-        'campaign',
-        'campaign.company_id = company.id',
-      )
-      .where('user.id = :userId', { userId })
-      .getRawOne();
+    // const campaign = await this._query
+    //   .createQueryBuilder()
+    //   .select('campaign.id')
+    //   .from(User, 'user')
+    //   .leftJoinAndMapOne(
+    //     'user.id',
+    //     Company,
+    //     'company',
+    //     'company.user_id = user.id',
+    //   )
+    //   .leftJoinAndMapOne(
+    //     'company.id',
+    //     Campaign,
+    //     'campaign',
+    //     'campaign.company_id = company.id',
+    //   )
+    //   .where('user.id = :userId', { userId })
+    //   .getRawOne();
 
-      return campaign
+    const campaign = await this._query.getRepository(User).findOne({
+      where: {
+        id: userId,
+      },
+      relations: ['companies', 'companies.campaigns'],
+    });
+
+    return campaign;
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} campaign`;
+    return this._campRepository.findOne({
+      where: {
+        id,
+      },
+    });
   }
 
-  update(id: number, updateCampaignDto: UpdateCampaignDto) {
-    return `This action updates a #${id} campaign`;
+  async update(id: number, updateCampaignDto: UpdateCampaignDto) {
+    const campaign = await this.findOne(id);
+    campaign.name = updateCampaignDto.name;
+    campaign.brand_name = updateCampaignDto.brandName;
+    campaign.total_budget = updateCampaignDto.totalBudget;
+    campaign.create_budget = updateCampaignDto.createBudget;
+    campaign.when_start = new Date(updateCampaignDto.startDate);
+    campaign.when_end = new Date(updateCampaignDto.endDate);
+    const save = this._campRepository.save(campaign);
+    return save;
   }
 
   remove(id: number) {

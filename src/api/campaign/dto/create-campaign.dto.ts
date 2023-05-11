@@ -17,6 +17,12 @@ export class CreateCampaignDto {
     @IsNotEmpty()
     endDate: string
 
+    @IsNotEmpty()
     startDate: string
+
+    // Relation
     company: Company
+
+    @IsNotEmpty()
+    compId: number
 }

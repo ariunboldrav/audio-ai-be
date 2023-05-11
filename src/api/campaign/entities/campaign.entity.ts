@@ -33,26 +33,26 @@ export class Campaign extends _BaseEntity {
   create_budget: number;
 
   // This field must be relations
-  @ManyToOne(() => Company, (company) => company.campaigns, { nullable: false })
+  @ManyToOne(() => Company, (company) => company.campaigns, {
+    nullable: false,
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'company_id' })
   company: Company;
 
-  @OneToOne(() => Content, (c) => c.campaign)
-  contents: Content;
+  @OneToOne(() => Content, (c) => c.campaign, { onDelete: 'CASCADE' })
+  content: Content;
 
-  @OneToOne(() => Specification, (s) => s.campaign)
-  specs: Specification;
+  @OneToOne(() => Specification, (s) => s.campaign, { onDelete: 'CASCADE' })
+  spec: Specification;
 
-  @OneToMany(() => FileAnswer, (f) => f.campaign)
+  @OneToMany(() => FileAnswer, (f) => f.campaign, { onDelete: 'CASCADE' })
   fileAnswers: FileAnswer[];
 
   // Maybe clients reuse that ad's dates will be abstract
-  @Column({ name: 'when_start', default: () => 'CURRENT_TIMESTAMP(6)' })
+  @Column({ name: 'when_start', nullable: false })
   when_start: Date;
 
   @Column({ name: 'when_end', nullable: false })
   when_end: Date;
-
-  @OneToMany(() => Specification, (spec) => spec.campaign)
-  specifications: Specification[];
 }

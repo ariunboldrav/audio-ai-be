@@ -8,6 +8,8 @@ import {
   Delete,
   UseGuards,
   Request,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { CampaignService } from './campaign.service';
 import { CreateCampaignDto } from './dto/create-campaign.dto';
@@ -25,16 +27,24 @@ export class CampaignController {
   @UseGuards(JwtAuthGuard)
   @Post()
   async create(@Request() req, @Body() createCampaignDto: CreateCampaignDto) {
-    // console.log(req.user.id)
-    const company = await this.companyService.findByUser(req.user.id);
-    createCampaignDto.company = company;
-    const data = await this.campaignService.findByCompany(req.user.id);
-    if (!data.campaign_id) {
+    const compId = createCampaignDto.compId;
+    const company = await this.companyService.findByUser(req.user.id, compId);
+    if (company && company.campaigns.length > 0) {
+      const campaign = await this.campaignService.update(
+        company.campaigns[0].id,
+        createCampaignDto,
+      );
+      throw new HttpException(campaign, HttpStatus.OK);
+    } else if (company && company.campaigns.length == 0) {
+      createCampaignDto.company = company;
       const campaign = await this.campaignService.create(createCampaignDto);
-      return campaign;
+      throw new HttpException(campaign, HttpStatus.OK);
+    } else {
+      throw new HttpException(
+        { message: "You don't have any access", company },
+        HttpStatus.FORBIDDEN,
+      );
     }
-    return data;
-    // return this.campaignService.create(createCampaignDto);
   }
 
   @Get()
