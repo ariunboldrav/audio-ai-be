@@ -3,7 +3,7 @@ import { CreateCompanyDto } from './dto/create-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Company } from './entities/company.entity';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { User } from '../users/entities/user.entity';
 
 @Injectable()
@@ -11,15 +11,30 @@ export class CompanyService {
   constructor(
     @InjectRepository(Company)
     private _companyResp: Repository<Company>,
+    private _query: DataSource,
   ) {}
 
-  async create(createCompanyDto: CreateCompanyDto, user: User): Promise<Company> {
+  async create(
+    createCompanyDto: CreateCompanyDto,
+    user: User,
+  ): Promise<Company> {
     const company = await this._companyResp.create();
     company.name = createCompanyDto.name;
     company.user = user;
     company.is_verified = true;
     const save = this._companyResp.save(company);
     return save;
+  }
+
+  async findByUser(userId: number): Promise<Company> {
+    const company = await this._query
+      .createQueryBuilder()
+      .select('*')
+      .from(Company, 'company')
+      .where('company.user_id = :userId', { userId })
+      .getRawOne();
+
+    return company;
   }
 
   async findAll(user: User) {

@@ -3,13 +3,16 @@ import { CreateCampaignDto } from './dto/create-campaign.dto';
 import { UpdateCampaignDto } from './dto/update-campaign.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Campaign } from './entities/campaign.entity';
-import { Repository } from 'typeorm';
+import { DataSource, QueryBuilder, Repository } from 'typeorm';
+import { User } from '../users/entities/user.entity';
+import { Company } from '../company/entities/company.entity';
 
 @Injectable()
 export class CampaignService {
   constructor(
     @InjectRepository(Campaign)
     private _campRepository: Repository<Campaign>,
+    private _query: DataSource,
   ) {}
 
   async create(createCampaignDto: CreateCampaignDto): Promise<Campaign> {
@@ -31,6 +34,29 @@ export class CampaignService {
 
   findAll() {
     return `This action returns all campaigns`;
+  }
+
+  async findByCompany(userId: number): Promise<any> {
+    const campaign = await this._query
+      .createQueryBuilder()
+      .select('campaign.*')
+      .from(User, 'user')
+      .leftJoinAndMapOne(
+        'user.id',
+        Company,
+        'company',
+        'company.user_id = user.id',
+      )
+      .leftJoinAndMapOne(
+        'company.id',
+        Campaign,
+        'campaign',
+        'campaign.company_id = company.id',
+      )
+      .where('user.id = :userId', { userId })
+      .getRawOne();
+
+      return campaign
   }
 
   findOne(id: number) {
