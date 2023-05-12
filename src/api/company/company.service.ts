@@ -34,7 +34,7 @@ export class CompanyService {
           id: userId,
         },
       },
-      relations: ['campaigns', 'campaigns.spec', 'campaigns.content'],
+      relations: ['campaigns', 'campaigns.spec', 'campaigns.content', 'campaigns.fileAnswers'],
     });
     return company;
   }

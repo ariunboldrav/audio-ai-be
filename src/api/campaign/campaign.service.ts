@@ -32,19 +32,8 @@ export class CampaignService {
     return save;
   }
 
-  findAll() {
-    return `This action returns all campaigns`;
-  }
-
-  async findByCompany(userId: number): Promise<any> {
-    const campaign = await this._query.getRepository(User).findOne({
-      where: {
-        id: userId,
-      },
-      relations: ['companies', 'companies.campaigns'],
-    });
-
-    return campaign;
+  async findAll() {
+    return await this._campRepository.find();
   }
 
   findOne(id: number) {
