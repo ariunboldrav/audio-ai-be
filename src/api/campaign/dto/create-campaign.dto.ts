@@ -23,6 +23,6 @@ export class CreateCampaignDto {
     // Relation
     company: Company
 
-    @IsNotEmpty()
-    compId: number
+    // @IsNotEmpty()
+    // compId: number
 }

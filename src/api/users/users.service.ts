@@ -31,7 +31,12 @@ export class UsersService {
   }
 
   findOne(id: number): Promise<User> {
-    const user = this._userRepository.findOneBy({ id });
+    const user = this._userRepository.findOne({ 
+      where: {
+        id
+      },
+      relations: ['companies']
+     });
     return user;
   }
 
@@ -62,12 +67,15 @@ export class UsersService {
 
   async update(id: number, updateUserDto: UpdateUserDto) {
     const user = await this._userRepository.findOneBy({ id, is_active: true });
-    if (
-      updateUserDto.newPass != null &&
-      updateUserDto.newPass === updateUserDto.confirmPass
-    ) {
-      user.password = updateUserDto.newPass;
-    }
+    // if (
+    //   updateUserDto.newPass != null &&
+    //   updateUserDto.newPass === updateUserDto.confirmPass
+    // ) {
+    //   user.password = updateUserDto.newPass;
+    // }
+    user.full_name = updateUserDto.fullName
+    user.phone = updateUserDto.phone
+    user.email = updateUserDto.email
     const save = this._userRepository.save(user);
     return { ...save };
   }

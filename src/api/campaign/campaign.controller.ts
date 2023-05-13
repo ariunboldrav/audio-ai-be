@@ -51,9 +51,11 @@ export class CampaignController {
     return this.campaignService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.campaignService.findOne(+id);
+  @UseGuards(JwtAuthGuard)
+  @Get()
+  async findOne(@Param('id') id: string, @Request() req) {
+    const company = await this.companyService.findByUser(req.user.id);
+    return company;
   }
 
   @Patch(':id')

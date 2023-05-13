@@ -18,6 +18,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CompanyService } from '../company/company.service';
 import { CreateCompanyDto } from '../company/dto/create-company.dto';
+import { UpdateCompanyDto } from '../company/dto/update-company.dto';
 
 @Controller('users')
 export class UsersController {
@@ -46,9 +47,15 @@ export class UsersController {
     // throw new HttpException({ result: user, message: null }, HttpStatus.OK)
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
+  @UseGuards(JwtAuthGuard)
+  @Patch()
+  async update(@Request() req, @Body() updateUserDto: UpdateUserDto) {
+    const updateCompanyDto = new UpdateCompanyDto();
+    updateCompanyDto.name = updateUserDto.compName;
+    updateCompanyDto.desc = updateUserDto.compDesc
+    const company = await this.companyService.findByUser(req.user.id);
+    this.companyService.update(company.id, updateCompanyDto);
+    return this.usersService.update(req.user.id, updateUserDto);
   }
 
   @Delete(':id')

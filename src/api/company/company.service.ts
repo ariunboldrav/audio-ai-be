@@ -34,7 +34,12 @@ export class CompanyService {
           id: userId,
         },
       },
-      relations: ['campaigns', 'campaigns.spec', 'campaigns.content', 'campaigns.fileAnswers'],
+      relations: [
+        'campaigns',
+        'campaigns.spec',
+        'campaigns.content',
+        'campaigns.fileAnswers',
+      ],
     });
     return company;
   }
@@ -58,8 +63,11 @@ export class CompanyService {
     return comp;
   }
 
-  update(id: number, updateCompanyDto: UpdateCompanyDto) {
-    return `This action updates a #${id} company`;
+  async update(id: number, updateCompanyDto: UpdateCompanyDto) {
+    const company = await this.findOne(id);
+    company.name = updateCompanyDto.name;
+    const save = this._companyResp.save(company);
+    return save;
   }
 
   remove(id: number) {

@@ -23,22 +23,20 @@ export class CompanyController {
     private readonly companyService: CompanyService,
   ) {}
 
-  @UseGuards(JwtAuthGuard)
-  async create(@Body() createCompanyDto: CreateCompanyDto, @Request() req) {
-    // return this.companyService.create(createCompanyDto);
-  }
-
+  @UseGuards(UseGuards)
   @Get()
   async findAll(@Request() req) {
     return this.companyService.findAll(req.user.id);
   }
 
+  @UseGuards(UseGuards)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.companyService.findOne(+id);
   }
 
-  @Patch(':id')
+  @UseGuards(UseGuards)
+  @Post()
   update(@Param('id') id: string, @Body() updateCompanyDto: UpdateCompanyDto) {
     return this.companyService.update(+id, updateCompanyDto);
   }
