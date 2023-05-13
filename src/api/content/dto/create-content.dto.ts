@@ -1,28 +1,28 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsEmpty, IsNotEmpty, IsOptional } from 'class-validator';
 import { Campaign } from 'src/api/campaign/entities/campaign.entity';
 
 export class CreateContentDto {
   campaign: Campaign;
-  @IsNotEmpty()
-  audienceFeel: string;
-  @IsNotEmpty()
+  @IsOptional()
   content: string;
-  @IsNotEmpty()
-  characterOrTone: string;
-  @IsNotEmpty()
-  comments: string;
-  @IsNotEmpty()
+  @IsOptional()
+  desired: string;
+  @IsOptional()
   goal: string;
-  @IsNotEmpty()
-  keyMessages: string;
-  @IsNotEmpty()
-  features: string;
-  @IsNotEmpty()
-  hope: string;
-  @IsNotEmpty()
-  styleAdv: string;
-  @IsNotEmpty()
-  guidelineTone: string;
-  @IsNotEmpty()
+  @IsOptional()
   targetAudience: string;
+  @IsOptional()
+  styleAdv: string;
+  @IsOptional()
+  audienceFeel: string;
+  @IsOptional()
+  hope: string;
+  @IsOptional()
+  features: string;
+  @IsOptional()
+  keyMessages: string;
+  @IsOptional()
+  guidelineTone: string;
+  @IsOptional()
+  comments: string;
 }

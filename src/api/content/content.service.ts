@@ -18,9 +18,9 @@ export class ContentService {
     const content = await this._contentRepository.create();
 
     content.content = createContentDto.content;
+    content.desired = createContentDto.desired;
     content.campaign = createContentDto.campaign;
     content.audience_feel = createContentDto.audienceFeel;
-    content.character_or_tone = createContentDto.characterOrTone;
     content.comments = createContentDto.comments;
     content.features = createContentDto.features;
     content.goal = createContentDto.goal;
@@ -53,8 +53,8 @@ export class ContentService {
 
     content.audience_feel = updateContentDto.audienceFeel;
     content.content = updateContentDto.content;
+    content.desired = updateContentDto.desired;
     content.audience_feel = updateContentDto.audienceFeel;
-    content.character_or_tone = updateContentDto.characterOrTone;
     content.comments = updateContentDto.comments;
     content.features = updateContentDto.features;
     content.goal = updateContentDto.goal;

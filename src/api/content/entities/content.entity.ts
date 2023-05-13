@@ -8,36 +8,36 @@ export class Content extends _BaseEntity {
   @JoinColumn({ name: 'campaign_id' })
   campaign: Campaign;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true})
   goal: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
   content: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
+  desired: string;
+
+  @Column({ type: 'text', nullable: true })
   hope: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
   target_audience: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
   style_adv: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
   audience_feel: string;
 
-  @Column({ type: 'text' })
-  character_or_tone: string;
-
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
   features: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
   key_messages: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
   guideline_tone: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
   comments: string;
 }

@@ -10,6 +10,7 @@ import {
   UseGuards,
   HttpException,
   HttpStatus,
+  Req,
 } from '@nestjs/common';
 import { ContentService } from './content.service';
 import { CreateContentDto } from './dto/create-content.dto';
@@ -53,14 +54,16 @@ export class ContentController {
     }
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
-  findAll() {
-    return this.contentService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.contentService.findOne(+id);
+  async findOne(@Request() req) {
+    const company = await this.companyService.findByUser(req.user.id);
+    if (company.campaigns.length > 0) {
+      if (company.campaigns[0].content) {
+        throw new HttpException(company.campaigns[0].content, HttpStatus.OK);
+      }
+    } 
+    throw new HttpException({message: 'Мэдээлэл олдсонгүй'}, HttpStatus.OK);
   }
 
   @Patch(':id')
