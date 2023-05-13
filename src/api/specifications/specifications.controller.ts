@@ -42,7 +42,9 @@ export class SpecificationsController {
     } else if (company.campaigns[0].spec == null) {
       // console.log('Insert');
       createSpecificationDto.campaign = company.campaigns[0];
-      const spec = await this.specificationsService.create(createSpecificationDto);
+      const spec = await this.specificationsService.create(
+        createSpecificationDto,
+      );
       throw new HttpException(spec, HttpStatus.OK);
     } else {
       // console.log('Update');
@@ -55,14 +57,16 @@ export class SpecificationsController {
     }
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
-  findAll() {
-    return this.specificationsService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.specificationsService.findOne(+id);
+  async findOne(@Request() req) {
+    const company = await this.companyService.findByUser(req.user.id);
+    if (company.campaigns.length > 0) {
+      if (company.campaigns[0].spec) {
+        throw new HttpException(company.campaigns[0].spec, HttpStatus.OK);
+      }
+    } 
+    throw new HttpException({message: 'Мэдээлэл олдсонгүй'}, HttpStatus.OK);
   }
 
   @Patch(':id')

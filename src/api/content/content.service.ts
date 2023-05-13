@@ -17,6 +17,7 @@ export class ContentService {
   async create(createContentDto: CreateContentDto) {
     const content = await this._contentRepository.create();
 
+    content.content = createContentDto.content;
     content.campaign = createContentDto.campaign;
     content.audience_feel = createContentDto.audienceFeel;
     content.character_or_tone = createContentDto.characterOrTone;
@@ -50,7 +51,8 @@ export class ContentService {
   async update(id: number, updateContentDto: UpdateContentDto) {
     const content = await this.findOne(id);
 
-    content.campaign = updateContentDto.campaign;
+    content.audience_feel = updateContentDto.audienceFeel;
+    content.content = updateContentDto.content;
     content.audience_feel = updateContentDto.audienceFeel;
     content.character_or_tone = updateContentDto.characterOrTone;
     content.comments = updateContentDto.comments;

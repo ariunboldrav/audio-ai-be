@@ -53,7 +53,7 @@ export class CampaignController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  async findOne(@Param('id') id: string, @Request() req) {
+  async findOne(@Request() req) {
     const company = await this.companyService.findByUser(req.user.id);
     return company;
   }

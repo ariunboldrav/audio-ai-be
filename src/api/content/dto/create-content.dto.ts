@@ -6,6 +6,8 @@ export class CreateContentDto {
   @IsNotEmpty()
   audienceFeel: string;
   @IsNotEmpty()
+  content: string;
+  @IsNotEmpty()
   characterOrTone: string;
   @IsNotEmpty()
   comments: string;

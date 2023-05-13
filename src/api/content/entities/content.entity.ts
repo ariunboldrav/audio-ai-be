@@ -12,6 +12,9 @@ export class Content extends _BaseEntity {
   goal: string;
 
   @Column({ type: 'text' })
+  content: string;
+
+  @Column({ type: 'text' })
   hope: string;
 
   @Column({ type: 'text' })
