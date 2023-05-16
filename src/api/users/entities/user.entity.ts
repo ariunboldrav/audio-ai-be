@@ -11,6 +11,9 @@ export class User extends _BaseEntity {
     @Column({nullable: false, type:'varchar'})
     public full_name: string;
 
+    @Column({nullable:false, default: false})
+    public studio: boolean;
+
     @Column({unique: true, nullable: false, type:'varchar'})
     @IsEmail()
     public email: string;

@@ -16,6 +16,7 @@ import { CreateCampaignDto } from './dto/create-campaign.dto';
 import { UpdateCampaignDto } from './dto/update-campaign.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CompanyService } from '../company/company.service';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('campaign')
 export class CampaignController {
@@ -46,9 +47,13 @@ export class CampaignController {
     }
   }
 
-  @Get()
-  findAll() {
-    return this.campaignService.findAll();
+  @UseGuards(JwtAuthGuard)
+  @Get('all')
+  async findAll(@Request() req) {
+    // const company = await this.companyService.findAllByUser(req.user.id);
+    const company = await this.companyService.findByUser(req.user.id);
+
+    return company
   }
 
   @UseGuards(JwtAuthGuard)
@@ -56,6 +61,14 @@ export class CampaignController {
   async findOne(@Request() req) {
     const company = await this.companyService.findByUser(req.user.id);
     return company;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get(':id')
+  async findOneId(@Request() req, @Param('id') id: number) {
+    const company = await this.companyService.findByUser(req.user.id);
+    const campaign = await this.campaignService.findOne(id)
+    return campaign;
   }
 
   @Patch(':id')
