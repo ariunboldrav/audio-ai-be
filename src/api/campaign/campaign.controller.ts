@@ -17,12 +17,14 @@ import { UpdateCampaignDto } from './dto/update-campaign.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CompanyService } from '../company/company.service';
 import { AuthGuard } from '@nestjs/passport';
+import { UsersService } from '../users/users.service';
 
 @Controller('campaign')
 export class CampaignController {
   constructor(
     private readonly campaignService: CampaignService,
     private readonly companyService: CompanyService,
+    private readonly userService: UsersService
   ) {}
 
   @UseGuards(JwtAuthGuard)
@@ -50,7 +52,11 @@ export class CampaignController {
   @UseGuards(JwtAuthGuard)
   @Get('all')
   async findAll(@Request() req) {
-    // const company = await this.companyService.findAllByUser(req.user.id);
+    const user = await this.userService.findOne(req.user.id);
+    if(user.studio) {
+      return await this.campaignService.findAll()
+    }
+
     const company = await this.companyService.findByUser(req.user.id);
 
     return company
