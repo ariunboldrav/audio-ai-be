@@ -18,7 +18,7 @@ export class User extends _BaseEntity {
     @IsEmail()
     public email: string;
 
-    @Column({unique: true, nullable:false, type: 'varchar', length: 15})
+    @Column({unique: false, nullable:false, type: 'varchar', length: 15})
     @IsPhoneNumber()
     public phone: string;
 

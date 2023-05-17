@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsPhoneNumber, IsString, Length, MinLength } from "class-validator";
+import { IsNotEmpty, IsOptional, IsPhoneNumber, IsString, Length, MinLength } from "class-validator";
 import { DeviceTypeEnum } from "src/common/enum/device.type.enum";
 
 export class CreateUserDto {
@@ -21,5 +21,6 @@ export class CreateUserDto {
     
     deviceType: string
     deviceToken: string
+    @IsOptional()
     studio: boolean
 }
