@@ -13,18 +13,18 @@ export class SpecificationsService {
     private _query: DataSource,
   ) {}
 
-  async create(createSpecificationDto: CreateSpecificationDto) {
+  async create(dto: CreateSpecificationDto) {
     const spec = await this._specRepository.create();
 
-    spec.campaign = createSpecificationDto.campaign;
+    spec.campaign = dto.campaign;
 
-    spec.media = createSpecificationDto.media;
-    spec.banner_size = createSpecificationDto.bannerSize;
-    spec.banner_freq = createSpecificationDto.bannerFreq;
-    spec.seconds = createSpecificationDto.seconds;
-    spec.seconds_freq = createSpecificationDto.secondsFreq;
-    spec.logo_size = createSpecificationDto.logoSize;
-    spec.logo_freq = createSpecificationDto.logoFreq;
+    spec.media = dto.media;
+    spec.banner_size = dto.bannerSize;
+    spec.banner_freq = dto.bannerFreq ? dto.bannerFreq : 0;
+    spec.seconds = dto.seconds;
+    spec.seconds_freq = dto.secondsFreq ? dto.secondsFreq : 0;
+    spec.logo_size = dto.logoSize;
+    spec.logo_freq = dto.logoFreq ? dto.logoFreq : 0;
 
     const data = this._specRepository.save(spec);
     return data;

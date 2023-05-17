@@ -7,15 +7,15 @@ export class CreateSpecificationDto {
   @IsNotEmpty()
   bannerSize: string;
   @IsNotEmpty()
-  @IsNotEmpty()
+  // @IsNotEmpty()
   bannerFreq: number;
   @IsNotEmpty()
   seconds: number;
-  @IsNotEmpty()
+  // @IsNotEmpty()
   secondsFreq: number;
   @IsNotEmpty()
   logoSize: string;
-  @IsNotEmpty()
+  // @IsNotEmpty()
   logoFreq: number;
   campaign: Campaign;
   campId: number;
