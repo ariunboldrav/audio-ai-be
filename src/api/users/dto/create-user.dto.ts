@@ -3,7 +3,7 @@ import { DeviceTypeEnum } from "src/common/enum/device.type.enum";
 
 export class CreateUserDto {
     @IsNotEmpty({message: 'Та гар утасны дугаараа зөв оруулана уу!'})
-    @IsPhoneNumber("US")
+    // @IsPhoneNumber("US")
     phone: string
 
     @IsNotEmpty({message: 'Та нэрээ оруулана уу!'})
