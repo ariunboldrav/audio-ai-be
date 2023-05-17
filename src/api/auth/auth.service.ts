@@ -15,10 +15,13 @@ export class AuthService {
   async validateUserCredentials(email: string, password: string): Promise<any> {
     const user = await this.userService.findEmail(email);
     if (!user) {
-      return {
-        token: null,
-        message: 'Таны нууц үг эсвэл хэрэглэгчийн нэр буруу байна.',
-      };
+      throw new HttpException(
+        {
+          token: null,
+          message: 'Таны нууц үг эсвэл хэрэглэгчийн нэр буруу байна.',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
     }
     var userPassword = user.password;
     var userId = user.id;
@@ -28,10 +31,13 @@ export class AuthService {
         token: this.loginWithCredentials(userId),
       };
     }
-    return {
-      token: null,
-      message: 'Таны нууц үг эсвэл хэрэглэгчийн нэр буруу байна.',
-    };
+    throw new HttpException(
+      {
+        token: null,
+        message: 'Таны нууц үг эсвэл хэрэглэгчийн нэр буруу байна.',
+      },
+      HttpStatus.BAD_REQUEST,
+    );
   }
 
   loginWithCredentials(userId: number) {
