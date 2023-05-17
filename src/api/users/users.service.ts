@@ -22,6 +22,7 @@ export class UsersService {
     const saltRounds = 10;
     user.password = await bcrypt.hash(createUserDto.password, saltRounds);
     user.phone = createUserDto.phone;
+    user.studio = createUserDto.studio
     const newUser = await this._userRepository.save(user);
     return { ...newUser };
   }

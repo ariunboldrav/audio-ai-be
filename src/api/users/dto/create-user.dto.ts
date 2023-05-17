@@ -21,4 +21,5 @@ export class CreateUserDto {
     
     deviceType: string
     deviceToken: string
+    studio: boolean
 }
