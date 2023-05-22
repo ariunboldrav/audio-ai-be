@@ -1,4 +1,4 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsOptional } from 'class-validator';
 import { Campaign } from 'src/api/campaign/entities/campaign.entity';
 
 export class CreateSpecificationDto {
@@ -6,17 +6,18 @@ export class CreateSpecificationDto {
   media: string;
   @IsNotEmpty()
   bannerSize: string;
-  @IsNotEmpty()
-  // @IsNotEmpty()
+  @IsOptional()
   bannerFreq: number;
   @IsNotEmpty()
   seconds: number;
-  // @IsNotEmpty()
+  @IsOptional()
   secondsFreq: number;
   @IsNotEmpty()
   logoSize: string;
-  // @IsNotEmpty()
+  @IsOptional()
   logoFreq: number;
-  campaign: Campaign;
+  @IsOptional()
   campId: number;
+  campaign: Campaign;
+
 }

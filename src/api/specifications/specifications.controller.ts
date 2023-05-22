@@ -27,30 +27,22 @@ export class SpecificationsController {
   ) {}
 
   @UseGuards(JwtAuthGuard)
-  @Post()
+  @Post(':id')
   async create(
     @Body() createSpecificationDto: CreateSpecificationDto,
     @Request() req,
+    @Param('id') id: number,
   ) {
-    const company = await this.companyService.findByUser(req.user.id);
-    if (!company || company.campaigns.length == 0) {
-      // console.log('Error');
-      throw new HttpException(
-        { message: 'Not Found Company - Forbidden' },
-        HttpStatus.FORBIDDEN,
-      );
-    } else if (company.campaigns[0].spec == null) {
-      // console.log('Insert');
-      createSpecificationDto.campaign = company.campaigns[0];
-      const spec = await this.specificationsService.create(
-        createSpecificationDto,
-      );
+    const campaign = await this.campaignService.findOne(id);
+    // console.log(campaign);
+    // TODO Check User
+    createSpecificationDto.campaign = campaign;
+    if(!campaign.spec) {
+      const spec = this.specificationsService.create(createSpecificationDto);
       throw new HttpException(spec, HttpStatus.OK);
     } else {
-      // console.log('Update');
-      const specId = company.campaigns[0].spec.id;
       const spec = await this.specificationsService.update(
-        specId,
+        +campaign.spec.id,
         createSpecificationDto,
       );
       throw new HttpException(spec, HttpStatus.OK);
@@ -58,23 +50,37 @@ export class SpecificationsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get()
-  async findOne(@Request() req) {
-    const company = await this.companyService.findByUser(req.user.id);
-    if (company.campaigns.length > 0) {
-      if (company.campaigns[0].spec) {
-        throw new HttpException(company.campaigns[0].spec, HttpStatus.OK);
-      }
-    } 
-    throw new HttpException({message: 'Мэдээлэл олдсонгүй'}, HttpStatus.OK);
+  @Get(':id')
+  async findOne(@Request() req, @Param('id') id: number) {
+    const campaign = await this.campaignService.findOne(id);
+    if (campaign) {
+      throw new HttpException(campaign.spec, HttpStatus.OK);
+    } else {
+      throw new HttpException(
+        { message: 'Мэдээлэл олдсонгүй' },
+        HttpStatus.NOT_FOUND,
+      );
+    }
   }
 
   @Patch(':id')
-  update(
-    @Param('id') id: string,
+  async update(
+    @Param('id') id: number,
     @Body() updateSpecificationDto: UpdateSpecificationDto,
   ) {
-    return this.specificationsService.update(+id, updateSpecificationDto);
+    const campaign = await this.campaignService.findOne(id);
+    if (campaign.spec) {
+      const spec = await this.specificationsService.update(
+        +campaign.spec.id,
+        updateSpecificationDto,
+      );
+      throw new HttpException(spec, HttpStatus.OK);
+    } else {
+      throw new HttpException(
+        { message: 'Мэдээлэл олдсонгүй' },
+        HttpStatus.NOT_FOUND,
+      );
+    }
   }
 
   @Delete(':id')

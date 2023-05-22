@@ -15,9 +15,7 @@ export class SpecificationsService {
 
   async create(dto: CreateSpecificationDto) {
     const spec = await this._specRepository.create();
-
     spec.campaign = dto.campaign;
-
     spec.media = dto.media;
     spec.banner_size = dto.bannerSize;
     spec.banner_freq = dto.bannerFreq ? dto.bannerFreq : 0;
@@ -25,7 +23,6 @@ export class SpecificationsService {
     spec.seconds_freq = dto.secondsFreq ? dto.secondsFreq : 0;
     spec.logo_size = dto.logoSize;
     spec.logo_freq = dto.logoFreq ? dto.logoFreq : 0;
-
     const data = this._specRepository.save(spec);
     return data;
   }

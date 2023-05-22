@@ -66,8 +66,6 @@ export class ContentService {
     const save = this._contentRepository.save(content);
 
     return save;
-
-    return `This action updates a #${id} content`;
   }
 
   remove(id: number) {

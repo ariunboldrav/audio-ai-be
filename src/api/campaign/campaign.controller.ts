@@ -59,7 +59,7 @@ export class CampaignController {
 
     const company = await this.companyService.findByUser(req.user.id);
 
-    return company
+    return company.campaigns
   }
 
   @UseGuards(JwtAuthGuard)
@@ -77,6 +77,7 @@ export class CampaignController {
     return campaign;
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   update(
     @Param('id') id: string,
@@ -85,6 +86,7 @@ export class CampaignController {
     return this.campaignService.update(+id, updateCampaignDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.campaignService.remove(+id);

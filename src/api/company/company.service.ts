@@ -27,8 +27,8 @@ export class CompanyService {
     return save;
   }
 
-  async findAllByUser(userId: number): Promise<Company[]> {
-    const company = await this._query.getRepository(Company).find({
+  async findAllByUser(userId: number): Promise<Company> {
+    const company = await this._query.getRepository(Company).findOne({
       where: {
         user: {
           id: userId,
