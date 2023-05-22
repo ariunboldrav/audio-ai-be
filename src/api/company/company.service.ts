@@ -38,7 +38,7 @@ export class CompanyService {
         'campaigns',
         'campaigns.spec',
         'campaigns.content',
-        'campaigns.fileAnswers',
+        'campaigns.fileAnswer',
       ],
     });
     return company;
@@ -55,7 +55,7 @@ export class CompanyService {
         'campaigns',
         'campaigns.spec',
         'campaigns.content',
-        'campaigns.fileAnswers',
+        'campaigns.fileAnswer',
       ],
     });
     return company;

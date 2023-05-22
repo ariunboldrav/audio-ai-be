@@ -8,22 +8,30 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryColumn,
 } from 'typeorm';
 
 @Entity()
 export class FileAnswer extends _BaseEntity {
-  @ManyToOne(() => Campaign, (c) => c.fileAnswers, { onDelete: 'CASCADE' })
+  @Column({ name: 'answer_one', nullable: true })
+  answer_one: string;
+
+  @Column({ name: 'answer_two', nullable: true })
+  answer_two: string;
+
+  @Column({ name: 'answer_three', nullable: true })
+  answer_three: string;
+
+  @Column({ name: 'answer_four', nullable: true })
+  answer_four: string;
+
+  @OneToOne(() => Campaign, (campaign) => campaign.spec, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'campaign_id' })
   campaign: Campaign;
 
-  @ManyToOne(() => FileType, (ft) => ft.fileAnswers)
-  @JoinColumn({ name: 'file_type_id' })
-  fType: FileType;
-
-  @Column({})
-  answer: string;
-
-  @OneToMany(() => FilePath, (fp) => fp.fileAnswers)
+  @OneToMany(() => FilePath, (fp) => fp.fileAnswer)
   paths: FilePath[];
 }

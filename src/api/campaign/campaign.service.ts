@@ -41,7 +41,7 @@ export class CampaignService {
       where: {
         id,
       },
-      relations: ['spec', 'content', 'fileAnswers']
+      relations: ['spec', 'content', 'fileAnswer']
     });
   }
 

@@ -9,7 +9,4 @@ export class FileType extends _BaseEntity {
 
     @Column()
     info: string
-
-    @OneToMany(()=> FileAnswer, fa => fa.fType)
-    fileAnswers: FileAnswer[]
 }

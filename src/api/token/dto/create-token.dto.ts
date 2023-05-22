@@ -3,15 +3,15 @@ import { TokenTypeEnum } from "src/common/enum/token.type.enum";
 import { TokenSendTypeEnum } from "src/common/enum/token.sendtype.enum";
 
 export class CreateTokenDto {
-    @IsNotEmpty()
+    @IsNotEmpty({ message: 'JPN-Required!' })
     sendTo: string
 
-    @IsNotEmpty()
+    @IsNotEmpty({ message: 'JPN-Required!' })
     sendType: TokenSendTypeEnum
 
-    @IsNotEmpty()
+    @IsNotEmpty({ message: 'JPN-Required!' })
     type: TokenTypeEnum
 
-    @IsNotEmpty()
+    @IsNotEmpty({ message: 'JPN-Required!' })
     userId: number
 }

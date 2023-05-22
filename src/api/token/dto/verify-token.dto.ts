@@ -3,9 +3,9 @@ import { TokenTypeEnum } from "src/common/enum/token.type.enum";
 import { TokenSendTypeEnum } from "src/common/enum/token.sendtype.enum";
 
 export class VerifyTokenDto {
-    @IsNotEmpty()
+    @IsNotEmpty({ message: 'JPN-Required!' })
     token: string
-    @IsNotEmpty()
+    @IsNotEmpty({ message: 'JPN-Required!' })
     sendTo: string
     sendType: TokenSendTypeEnum
     type: TokenTypeEnum

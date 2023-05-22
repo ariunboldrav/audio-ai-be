@@ -46,8 +46,8 @@ export class Campaign extends _BaseEntity {
   @OneToOne(() => Specification, (s) => s.campaign, { onDelete: 'CASCADE' })
   spec: Specification;
 
-  @OneToMany(() => FileAnswer, (f) => f.campaign, { onDelete: 'CASCADE' })
-  fileAnswers: FileAnswer[];
+  @OneToOne(() => FileAnswer, (f) => f.campaign, { onDelete: 'CASCADE' })
+  fileAnswer: FileAnswer;
 
   // Maybe clients reuse that ad's dates will be abstract
   @Column({ name: 'when_start', nullable: false })

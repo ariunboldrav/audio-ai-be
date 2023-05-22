@@ -2,27 +2,27 @@ import { IsNotEmpty } from "class-validator";
 import { Company } from "src/api/company/entities/company.entity";
 
 export class CreateCampaignDto {
-    @IsNotEmpty()
+    @IsNotEmpty({ message: 'JPN-Required!' })
     name: string
 
-    @IsNotEmpty()
+    @IsNotEmpty({ message: 'JPN-Required!' })
     brandName: string
 
-    @IsNotEmpty()
+    @IsNotEmpty({ message: 'JPN-Required!' })
     totalBudget: number
 
-    @IsNotEmpty()
+    @IsNotEmpty({ message: 'JPN-Required!' })
     createBudget: number
 
-    @IsNotEmpty()
+    @IsNotEmpty({ message: 'JPN-Required!' })
     endDate: string
 
-    @IsNotEmpty()
+    @IsNotEmpty({ message: 'JPN-Required!' })
     startDate: string
 
     // Relation
     company: Company
 
-    // @IsNotEmpty()
+    // @IsNotEmpty({ message: 'JPN-Required!' })
     // compId: number
 }
