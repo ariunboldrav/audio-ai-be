@@ -24,20 +24,21 @@ export class CampaignController {
   constructor(
     private readonly campaignService: CampaignService,
     private readonly companyService: CompanyService,
-    private readonly userService: UsersService
+    private readonly userService: UsersService,
   ) {}
 
   @UseGuards(JwtAuthGuard)
   @Post()
   async create(@Request() req, @Body() createCampaignDto: CreateCampaignDto) {
     const company = await this.companyService.findByUser(req.user.id);
-    if (company && company.campaigns.length > 0) {
+    console.log(createCampaignDto.campId)
+    if (company && createCampaignDto.campId) {
       const campaign = await this.campaignService.update(
-        company.campaigns[0].id,
+        createCampaignDto.campId,
         createCampaignDto,
       );
       throw new HttpException(campaign, HttpStatus.OK);
-    } else if (company && company.campaigns.length == 0) {
+    } else if (company && createCampaignDto.campId == null) {
       createCampaignDto.company = company;
       const campaign = await this.campaignService.create(createCampaignDto);
       throw new HttpException(campaign, HttpStatus.OK);
@@ -53,13 +54,13 @@ export class CampaignController {
   @Get('all')
   async findAll(@Request() req) {
     const user = await this.userService.findOne(req.user.id);
-    if(user.studio) {
-      return await this.campaignService.findAll()
+    if (user.studio) {
+      return await this.campaignService.findAll();
     }
 
     const company = await this.companyService.findByUser(req.user.id);
 
-    return company.campaigns
+    return company.campaigns;
   }
 
   @UseGuards(JwtAuthGuard)
@@ -73,17 +74,8 @@ export class CampaignController {
   @Get(':id')
   async findOneId(@Request() req, @Param('id') id: number) {
     const company = await this.companyService.findByUser(req.user.id);
-    const campaign = await this.campaignService.findOne(id)
+    const campaign = await this.campaignService.findOne(id);
     return campaign;
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateCampaignDto: UpdateCampaignDto,
-  ) {
-    return this.campaignService.update(+id, updateCampaignDto);
   }
 
   @UseGuards(JwtAuthGuard)

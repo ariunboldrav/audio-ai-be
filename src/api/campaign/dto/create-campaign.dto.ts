@@ -1,4 +1,4 @@
-import { IsNotEmpty } from "class-validator";
+import { IsNotEmpty, IsOptional } from "class-validator";
 import { Company } from "src/api/company/entities/company.entity";
 
 export class CreateCampaignDto {
@@ -22,6 +22,9 @@ export class CreateCampaignDto {
 
     // Relation
     company: Company
+
+    @IsOptional()
+    campId: number
 
     // @IsNotEmpty({ message: 'JPN-Required!' })
     // compId: number
